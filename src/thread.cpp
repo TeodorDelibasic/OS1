@@ -5,20 +5,14 @@
 #include "util.h"
 
 Thread::Thread(StackSize stackSize, Time timeSlice) {
-
 	disableContextSwitch;
-
 	this->myPCB = new PCB(this, stackSize, timeSlice, PCB::wrapper);
-
 	enableContextSwitch;
 }
 
 Thread::~Thread() {
-
 	disableContextSwitch;
-
 	delete this->myPCB;
-
 	enableContextSwitch;
 }
 

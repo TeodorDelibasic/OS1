@@ -2,20 +2,14 @@
 #include "kerSem.h"
 
 Semaphore::Semaphore(int init) {
-
 	disableContextSwitch;
-
 	this->myImpl = new KernelSem(init);
-
 	enableContextSwitch;
 }
 
 Semaphore::~Semaphore() {
-
 	disableContextSwitch;
-
 	delete this->myImpl;
-
 	enableContextSwitch;
 }
 

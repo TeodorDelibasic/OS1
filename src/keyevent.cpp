@@ -1,23 +1,14 @@
-//===========================================================================//
-//   Project: Projekat iz Operativnih sistema 1
-//   File:    keyevent.cpp
-//   Date:    Maj 2021
-//===========================================================================//
-#include <iostream.h>
-#include <dos.h>
-
 #include "keyevent.h"
 #include "bounded.h"
 #include "user.h"
 #include "intLock.h"
+
+#include <iostream.h>
+#include <dos.h>
 #include <event.h>
 
 PREPAREENTRY(9,0);
   
-//---------------------------------------------------------------------------//
-//  Podeseno za qwerty tastature
-//  Tabela nije potpuna
-//---------------------------------------------------------------------------//
 char keymap[128] = { 
   0 , 27,'1','2','3','4','5','6','7','8','9','0','-','=', 8 , 9, 
  'q','w','e','r','t','y','u','i','o','p','[',']', 13, 0 ,'a','s',
@@ -80,10 +71,9 @@ void KeyboardEvent::run()
        
 		 }while (!theEnd && status & 0x01); //dok se ocitava takav status da je pritisnut neki taster
 
-	}// while
+	}
 	
 	intLock
 		cout<<endl<<"KeyebordListener stopped!"<<endl;
 	intUnlock
-
 }

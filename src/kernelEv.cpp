@@ -23,40 +23,27 @@ KernelEv::~KernelEv() {
 }
 
 void KernelEv::wait() {
-
 	disableContextSwitch;
-
 	if(PCB::running == this->owner) {
-
 		if(this->value-- == 0) {
-
 			PCB::running->state = BLOCKED;
-
 			enableContextSwitch;
 
 			dispatch();
 		}
-		else
-			enableContextSwitch;
+		else enableContextSwitch;
 	}
-	else
-		enableContextSwitch;
+	else enableContextSwitch;
 }
 
 void KernelEv::signal() {
-
 	disableContextSwitch;
-
 	if(this->value == -1) {
-
 		this->owner->state = READY;
-
 		Scheduler::put(this->owner);
 	}
-
 	if(this->value < 1)
 		this->value++;
-
 	enableContextSwitch;
 }
 

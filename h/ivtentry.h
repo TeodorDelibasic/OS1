@@ -1,9 +1,9 @@
 #ifndef IVTENTRY_H_
 #define IVTENTRY_H_
 
-#include "kernelEv.h"
-#include "thread.h"
 #include "util.h"
+
+class KernelEv;
 
 #define PREPAREENTRY(ivtNum, callOld)\
 void interrupt interruptEvent##ivtNum(...);\
@@ -19,7 +19,6 @@ const int numberOfEntries = 256;
 class IVTEntry {
 
 public:
-
 	static IVTEntry* allEntries[numberOfEntries];
 
 	IVTEntry(IVTNo ivtNo, intPointer newRoutine);
@@ -30,7 +29,9 @@ public:
 	void setVector();
 	void restoreVector();
 
-	void callOld() { (*oldRoutine)(); }
+	void callOld() {
+		(*oldRoutine)();
+	}
 
 	IVTNo ivtNo;
 	intPointer newRoutine, oldRoutine;

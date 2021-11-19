@@ -3,8 +3,9 @@
 
 #include "ivtentry.h"
 
-typedef unsigned char IVTNo;
 class KernelEv;
+
+typedef unsigned char IVTNo;
 
 class Event {
 

@@ -1,8 +1,3 @@
-//===========================================================================//
-//   Project: Projekat iz Operativnih sistema 1
-//   File:    user.cpp
-//   Date:    Maj 2021
-//===========================================================================//
 #include <iostream.h>
 #include <stdlib.h>
 #include <assert.h>
@@ -14,87 +9,51 @@
 #include <event.h>
 #include "semaphor.h"
 
-//---------------------------------------------------------------------------//
-//  Otkomentarisati ukoliko se testira fork
-//---------------------------------------------------------------------------//
 // #define FORK
-//---------------------------------------------------------------------------//
 
-//---------------------------------------------------------------------------//
-//  Ovo se menja u testu
-//---------------------------------------------------------------------------//
+Time TIME_SLICE = 2;
 
-Time TIME_SLICE = 2;   // 0 ili defaultTimeSlice
+int N = 3;
 
-int N = 3;            // 1 <= N <= 19
-
-//---------------------------------------------------------------------------//
-
-volatile int theEnd=0;
+volatile int theEnd = 0;
 
 class Producer : public Thread {
 
 public:
 	Producer (BoundedBuffer* bb, char y, Time time_slice);
-
 	virtual ~Producer() {waitToComplete(); }
-
     Thread* clone() const { return new Producer(myBuffer, x, time_slice_clone); }
 
 protected:
-
 	virtual void run ();
-
 	char produce() {return x;}; // Produce an item
 
 private:
-
 	Time time_slice_clone;
-
 	BoundedBuffer* myBuffer;
-
 	char x;
-
 	Semaphore sleep;
 };
 
-
-
-//---------------------------------------------------------------------------//
 class Consumer : public Thread {
 
 public:
-
 	Consumer (BoundedBuffer* bb) : Thread(defaultStackSize, 0), myBuffer(bb), sleep(0) {}
-
 	virtual ~Consumer() {waitToComplete(); }
-
 	Thread* clone() const { return new Consumer(myBuffer); }
 
 protected:
-
 	virtual void run ();
-
 	void consume(char p); // Consume an item
 
 private:
-
 	BoundedBuffer* myBuffer;
-
 	Semaphore sleep;
 };
 
+void tick() {
 
-
-
-//---------------------------------------------------------------------------//
-// Korisnicki program mora obavezno da definise ovu f-ju
-//---------------------------------------------------------------------------//
-void tick(){
 }
-
-//---------------------------------------------------------------------------//
-
 
 Producer::Producer (BoundedBuffer* bb, char y, Time time_slice) 
 : Thread(defaultStackSize, time_slice),myBuffer(bb), x(y), sleep(0), time_slice_clone(time_slice) {}
@@ -107,25 +66,24 @@ void Producer::run () {
 	}
 }
 
-//---------------------------------------------------------------------------//
-
-
 void Consumer::consume(char p) {
 	intLock
 	cout<<p<<" ";
 	intUnlock
-} // Consume an item
+}
 
 void Consumer::run () {
-		
 	int i = 0;
+
 	while(!theEnd) {
 		char d = myBuffer->take();
 		consume(d);
+
 		if (i++ == 40) {
 			assert(1 != sleep.wait(5));
 			i = 0;
-		}else for(int j=0;j<200;j++);
+		}
+		else for(int j=0;j<200;j++);
 	}
  
 	intLock
@@ -138,27 +96,22 @@ void Consumer::run () {
 		dispatch();
 	}
 	
-	
 	intLock
 	cout<<endl<<"Happy End"<<endl;
 	intUnlock
 }
 
-
-
-
-
-int userMain (int argc, char* argv[])
-{
+int userMain (int argc, char* argv[]) {
 	BoundedBuffer *buff;
 	Consumer *con;
 	
 	intLock
-	if(argc <2){
+	if(argc <2) {
 		cout<<"Invalid input!"<<endl;
 		intUnlock
 		return -1;
 	}
+
 	int buffSize = atoi(argv[1]);
 	N = atoi(argv[2]);
 	//N = N>19 ? 19 : N;
@@ -226,4 +179,3 @@ int userMain (int argc, char* argv[])
 	intUnlock
 	return 0;
 }
-//---------------------------------------------------------------------------//

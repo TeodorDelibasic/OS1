@@ -59,9 +59,7 @@ private:
 };
 
 template<class T> List<T>& List<T>::pushBack(const T& t) {
-
 	Node* new_node = new Node(t);
-
 	new_node->prev = (last ? last : nullptr);
 	last = (last ? last->next : first) = new_node;
 
@@ -69,13 +67,9 @@ template<class T> List<T>& List<T>::pushBack(const T& t) {
 }
 
 template<class T> T List<T>::popFront() {
-
 	Node* i = this->first->next;
-
 	T data = this->first->data;
-
 	delete this->first;
-
 	this->first = i;
 
 	if (this->first != nullptr)
@@ -87,56 +81,37 @@ template<class T> T List<T>::popFront() {
 }
 
 template<class T> void List<T>::removeData(T t) {
-
 	Node* i = this->first;
 
-	while(i != 0 && i->data != t)
-		i = i->next;
+	while(i != 0 && i->data != t) i = i->next;
 
-	if(this->first == i)
-		this->first = i->next;
-
-	if(this->last == i)
-		this->last = i->prev;
-
-	if(i->next != nullptr)
-		i->next->prev = i->prev;
-
-	if(i->prev != nullptr)
-		i->prev->next = i->next;
+	if(this->first == i) this->first = i->next;
+	if(this->last == i) this->last = i->prev;
+	if(i->next != nullptr) i->next->prev = i->prev;
+	if(i->prev != nullptr) i->prev->next = i->next;
 
 	delete i;
 }
 
 template<class T> void List<T>::deleteCurr() {
-
 	Node* i = this->curr;
 
 	this->curr = this->curr->next;
 
-	if(this->first == i)
-		this->first = i->next;
-
-	if(this->last == i)
-		this->last = i->prev;
-
-	if(i->next != nullptr)
-		i->next->prev = i->prev;
-
-	if(i->prev != nullptr)
-		i->prev->next = i->next;
+	if(this->first == i) this->first = i->next;
+	if(this->last == i) this->last = i->prev;
+	if(i->next != nullptr) i->next->prev = i->prev;
+	if(i->prev != nullptr) i->prev->next = i->next;
 
 	delete i;
 }
 
 template<class T> List<T>::~List() {
-
 	Node* i = this->first;
 
 	while(i != nullptr) {
 		Node* old = i;
 		i = i->next;
-
 		delete old;
 	}
 

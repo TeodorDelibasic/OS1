@@ -20,6 +20,4 @@ private:
 	int value;
 };
 
-
-
 #endif

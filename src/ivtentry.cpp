@@ -1,9 +1,8 @@
+#include "ivtEntry.h"
+#include "util.h"
+
 #include <dos.h>
 #include <stdio.h>
-
-#include "ivtEntry.h"
-
-#include "util.h"
 
 IVTEntry* IVTEntry::allEntries[numberOfEntries] = {nullptr};
 

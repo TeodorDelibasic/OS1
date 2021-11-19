@@ -1,10 +1,10 @@
 #ifndef KERSEM_H_
 #define KERSEM_H_
 
-#include "pcb.h"
 #include "list.h"
 
 class Semaphore;
+class PCB;
 
 class KernelSem {
 

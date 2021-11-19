@@ -1,8 +1,9 @@
 #ifndef PCB_H_
 #define PCB_H_
 
-#include "thread.h"
 #include "list.h"
+
+class Thread;
 
 enum State { CREATED, READY, BLOCKED, FINISHED };
 
@@ -14,7 +15,6 @@ const StackSize maxStackSize = 65535;
 class PCB {
 
 public:
-
 	static volatile PCB* running;
 	static List<PCB*> allPCB;
 
@@ -36,22 +36,18 @@ public:
 
 	static void wrapper();
 
+private:
+	Thread* myThread;
+
 	ID id;
 
-	int unblockType;
-
-	unsigned sp, ss;
+	unsigned bp, sp, ss;
 	unsigned* stack;
 
-	unsigned bp;
-
 	Time timeSlice;
-
 	State state;
-
 	List<PCB*> blockedOnMe;
-
-	Thread* myThread;
+	int unblockType;
 };
 
 #endif
